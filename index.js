@@ -48,8 +48,13 @@ module.exports = function(sequelize, options){
 
    // Before create/update augment revision
    var before = function(instance, opt){
-      var previousVersion = instance._previousDataValues;
-      var currentVersion = instance.dataValues;
+      var previousVersion = {};
+      var currentVersion  = {};
+
+      opt.defaultFields.forEach(a => {
+         previousVersion[a] = instance._previousDataValues[a];
+         currentVersion[a]  = instance.dataValues[a];
+      });
 
       // Disallow change of revision
       instance.set(options.revisionAttribute, instance._previousDataValues[options.revisionAttribute]);
@@ -72,8 +77,14 @@ module.exports = function(sequelize, options){
          var Revision = sequelize.model(options.revisionModel);
          var RevisionChange = sequelize.model(options.revisionChangeModel);
          var diffs = instance.context.diffs;
-         var previousVersion = instance._previousDataValues;
-         var currentVersion = instance.dataValues;
+         
+         var previousVersion = {};
+         var currentVersion  = {};
+
+         opt.defaultFields.forEach(a => {
+            previousVersion[a] = instance._previousDataValues[a];
+            currentVersion[a]  = instance.dataValues[a];
+         });
 
          var user = opt.user;
          if(!user && instance.context && instance.context.user){
