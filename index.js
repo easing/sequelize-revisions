@@ -121,7 +121,7 @@ module.exports = function(sequelize, options){
                allowNull: false
             },
             documentId: {
-               type: Sequelize.UUID,
+               type: Sequelize.INTEGER,
                allowNull: false
             },
             revision: {
