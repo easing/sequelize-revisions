@@ -93,7 +93,7 @@ module.exports = function(sequelize, options){
 
          // Build revision
          var revision = Revision.build({
-            model: opt.model.name,
+            model: opt.model.name || opt.instance.$modelOptions.name.singular || "undefined",
             documentId: instance.get("id"),
             revision: instance.get(options.revisionAttribute),
             // Hacky, but necessary to get immutable current representation
